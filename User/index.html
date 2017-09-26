@@ -1,0 +1,149 @@
+<extend name="Public:base-unify" />
+<block name='title'>会员中心</block>
+<block name="head">
+    <link rel="stylesheet" href="__PUBLIC__/assets-unify/plugins/sky-forms-pro/skyforms/css/sky-forms.css">
+    <link rel="stylesheet" href="__PUBLIC__/assets-unify/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css">
+
+
+    <!--[if lt IE 9]><link rel="stylesheet" href="__PUBLIC__/assets-unify/plugins/sky-forms-pro/skyforms/css/sky-forms-ie8.css"><![endif]-->
+
+    <!-- CSS Page Style -->
+    <link rel="stylesheet" href="__PUBLIC__/assets-unify/css/pages/profile.css">
+</block>
+<block name='slider'>
+</block>
+<block name='breadcrumbs'>
+    <!-- Breadcrumbs v5 -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <h1 class="pull-left">会员中心</h1>
+            <ul class="breadcrumb pull-right">
+                <li><a href="/">Alexander's</a></li>
+                <li class="active">会员中心</li>
+            </ul>
+        </div>
+    </div>
+</block>
+
+<block name="content">
+    <!--=== Profile ===-->
+    <div class="container content profile"> 
+        <div class="row">
+            <!--Left Sidebar-->
+            <div class="col-md-3 md-margin-bottom-40">
+                <img class="img-responsive profile-img img-thumbnail margin-bottom-20" src="<{$userInfo.headimgurl}>" alt="">
+
+                <ul class="list-group sidebar-nav-v1 margin-bottom-40" id="sidebar-nav-1">
+                    <li class="list-group-item active">
+                        <a href="<{:U('User/index')}>"><i class="fa fa-user"></i> 个人信息</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="<{:U('User/order')}>"><i class="fa fa-group"></i> 订单列表</a>
+                    </li>
+                </ul>   
+
+            </div>
+            <!--End Left Sidebar-->
+
+            <!-- Profile Content -->            
+            <div class="col-md-9">
+                <div class="profile-body margin-bottom-20">
+                    <div class="tab-v1">
+                        <ul class="nav nav-justified nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#profile">个人信息</a></li>
+                            <li><a data-toggle="tab" href="#addressProfile">常用地址</a></li>
+                        </ul>          
+                        <div class="tab-content">
+                            <div id="profile" class="profile-edit tab-pane fade in active">
+                                <h2 class="heading-md">为方便我们更好的为您服务，请填写您的个人信息</h2>
+                                <p>您的个人信息将用于我们联系您</p>
+                                <br>
+                                <form class="sky-form" id="sky-form4" action="#">
+                                    <dl class="dl-horizontal">
+                                        <dt>姓名</dt>
+                                        <dd>
+                                            <section>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-user"></i>
+                                                    <input type="text" placeholder="在此输入您的姓名" name="name" vlaue='<{$userInfo.realName}>' class='userInfo-input' id='userInfo-name'>
+                                                    <b class="tooltip tooltip-bottom-right">必须项</b>
+                                                </label>
+                                            </section>
+                                        </dd>
+                                        <dt>性别</dt>
+                                        <dd>
+                                            <section>
+                                                <label class="select">
+                                                    <select class='userInfo-input' id='userInfo-sex'>
+                                                        <option value="">请选择</option>
+                                                        <option value="0">女</option>
+                                                        <option value="1">男</option>
+                                                    </select>
+                                                    <i></i>
+                                                </label>
+                                            </section>
+                                        </dd>
+                                        <dt>邮箱</dt>
+                                        <dd>
+                                            <section>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-lock"></i>
+                                                    <input type="emaill" name="emaIll" placeholder="在此输入您的邮箱地址" class='userInfo-input' id='userInfo-email' value='<{$userInfo.email}>'>
+                                                    <b class="tooltip tooltip-bottom-right">常用邮箱</b>
+                                                </label>
+                                            </section>
+                                        </dd> 
+                                        <dt>生日</dt>
+                                        <dd>
+                                            <section>
+                                                <label class="input">
+                                                    <i class="icon-append fa fa-lock"></i>
+                                                    <input type="text" name="birth" id='userInfo-birth' class='userInfo-input'>
+                                                    <b class="tooltip tooltip-bottom-right">Don't forget your password</b>
+                                                </label>
+                                            </section>
+                                        </dd>   
+                                    </dl>
+                                    <br>
+                                    <button class="btn btn-u">保存</button>
+                                </form>
+                            </div>
+
+                            <div id="addressProfile" class="profile-edit tab-pane fade">
+                                <h2 class="heading-md">常用地址信息</h2>
+                                <p>您可以添加或修改您的配送地址信息</p>
+                                <br> 
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+            <!-- End Profile Content -->               
+        </div><!--/end row-->
+    </div>      
+    <!--=== End Profile ===-->
+    <include file="Public:footer" />
+</block>
+
+<block name="body-bottom">
+<script src="__PUBLIC__/assets-unify/plugins/sky-forms-pro/skyforms/js/jquery.maskedinput.min.js"></script>
+<script src="__PUBLIC__/assets-unify/plugins/sky-forms-pro/skyforms/js/jquery-ui.min.js"></script>
+
+<!--[if lt IE 9]>
+    <script src="__PUBLIC__/assets-unify/plugins/sky-forms-pro/skyforms/js/sky-forms-ie8.js"></script>
+<![endif]-->
+<!--[if lt IE 10]>
+    <script src="__PUBLIC__/assets-unify/plugins/sky-forms-pro/skyforms/js/jquery.placeholder.min.js"></script>
+<![endif]-->  
+
+<script type="text/javascript">
+$('.header-sticky').removeClass('header-sticky');
+
+$('#userInfo-sex').val('<{$userInfo.sex}>');
+
+$("#userInfo-birth").mask('9999-99-99', {placeholder:'_'});
+
+var userInfo = {};
+$('')
+</script>
+</block>

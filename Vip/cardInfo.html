@@ -1,0 +1,94 @@
+<extend name="Public/base-shop" />
+<block name='content'>
+    <div class="header topbar">
+        <!-- 顶部栏 -->
+        <div class="weui-flex">
+            <div class="weui-flex__item">
+                <div class="placeholder"><span class="back-btn"><i class="iconfont icon-xiangzuo1" aria-hidden="true"></i>返回</span></div>
+            </div>
+            <div class="weui-flex__item">
+                <div class="placeholder text-center">优惠券详情</div>
+            </div>
+            <div class="weui-flex__item">
+                <div class="placeholder"></div>
+            </div>
+        </div>
+    </div>
+
+    <!--=================优惠券详情===================-->
+    <div class="content shop-content" style="padding-top: 14px;">
+        <!-- 顶部标识图 -->
+        <div class="weui-flex coupon-banner_style">
+            <div><div class="placeholder"></div></div>
+            <div class="weui-flex__item">
+                <div class="text-center">
+                    <img src="/Public/images/Mobile/cardInfo-logo.png?v=1.0.0" alt="Alexander's" title="alexander's ice cream" style="width: 98%;">
+                </div>
+            </div>
+            <div><div class="placeholder"></div></div>
+        </div>
+        <!-- 优惠券主体部分 -->
+        <div style="margin-top: 20px;">
+            <div class="shareHongbao-div coupon-div">
+                <div class="coupon-top">
+                    <div class="" style="display: inline-block;">
+                        <span class="card-title coupon-title"><{$cardInfo.price}></span>
+                    </div>
+                    <div class="" style="display: inline-block;">
+                        <div class="coupon-style">
+                            <p class="Hongbao-rmb_style">RMB</p>
+                            <span class="Hongbao-card_style">冰淇淋券</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="coupon-desc">
+                    <p class="shareHongbao-date">有效日期: <span><{$cardInfo.startTime}></span> 至 <span><{$cardInfo.endTime}></span></p>
+                    <p class="shareHongbao-date">购满<{$cardInfo.price_limit}>元即可使用</p>
+                </div>
+            </div>
+        </div>
+        <!-- 优惠券使用注意事项 -->
+        <div class="coupon-detail_padding">
+            <div class="weui-form-preview__item">
+                <label class="weui-form-preview__label coupon-color">使用细则:</label>
+                <span class="weui-form-preview__value card-explain">1. 购满<{$cardInfo.price_limit}>元即可使用本券。<br/>2. 支付时，请点击「使用优惠」选择该券。<br/>3. 该优惠券不与其他优惠同享。
+                    <br/>4. 如有任何疑问，请联系客服。<br/>5. 亚历山达冰淇淋保留法律范围内允许的解释权。</span>
+            </div>
+        </div>
+        <!-- 按钮 -->
+        <neq name='cardInfo.redirect_guid' value=''>
+            <a href="<{:U('ShopPc/index')}>?redirect=<{$cardInfo.redirect_guid}>" class="weui-btn weui-btn_primary ready-to-use_btn">立即使用</a>
+            <a href="<{:U('card')}>" style="margin-bottom: 20px;" class="weui-btn weui-btn_primary ready-to-use_btn">返回上页</a>
+        <else/>
+            <a href="<{:U('ShopPc/index')}>" class="weui-btn weui-btn_primary ready-to-use_btn">立即使用</a>
+            <a href="<{:U('card')}>" style="margin-bottom: 20px;" class="weui-btn weui-btn_primary ready-to-use_btn">返回上页</a>
+        </neq>
+
+    </div>
+    <include file="Public/footer-shop" />
+
+</block>
+<block name='footer-js'>
+    <script>
+        var iScreenWidth = window.screen.width; //获得浏览器分辨率
+
+        // 根据屏幕分辨率判断一些样式
+        if (iScreenWidth <= 1024) {
+            //隐去占据位置的div
+            $('.footer-bottom').css('display','block');
+        }else {
+            //隐去占据位置的div
+            $('.footer-bottom').css('display','none');
+        }
+
+        //底部栏图标变色
+        $('.menu-vip').addClass('weui-bar__item_on');
+        $('.vip-menu-icon').attr('src', "__PUBLIC__/images/Mobile/icon/menu-vip.png");
+        shop_item_init(false);
+
+        //返回
+        $('.back-btn').on('click', function(){
+            window.location.href="<{:U('Vip/card')}>";
+        });
+    </script>
+</block>

@@ -1,0 +1,154 @@
+<extend name="Public/base-shop" />
+<block name='content'>
+    <div class="header">
+        <!-- 顶部栏目 -->
+        <div class="weui-flex">
+            <div class="weui-flex__item">
+                <div class="placeholder"><span class="back-btn"><i class="iconfont icon-xiangzuo1" aria-hidden="true"></i>返回</span></div>
+            </div>
+            <div class="weui-flex__item">
+                <div class="placeholder text-center">在线充值</div>
+            </div>
+            <div class="weui-flex__item">
+                <div class="placeholder"></div>
+            </div>
+        </div>
+    </div>
+
+	<div class="content shop-vip recharge-cell">
+        <!-- 余额信息 -->
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__bd">
+                <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+                    <div class="weui-media-box__hd">
+                        <img class="weui-media-box__thumb" src="<{$userInfo.headimgurl}>" alt="您的微信头像" title="您的微信头像">
+                    </div>
+                    <div class="weui-media-box__bd">
+                        <h4 class="weui-media-box__title"><{$userInfo.nickname}></h4>
+                        <p class="weui-media-box__desc">帐号余额：<{$balance}>.00元</p>
+                        <p class="weui-media-box__desc">积分：<{$integral}></p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!-- 充值金额 -->
+        <div class="weui-cell" style="padding: 10px 13px 0 13px;">
+            <div class="weui-cell__hd base-color">
+                <img src="/Public/images/Mobile/icon/recharge-icon.png" alt="Alexander's" class="exchange_icon">
+            </div>
+            <div class="weui-cell__bd base-color">
+                <p class="big-font">在线充值</p>
+            </div>
+        </div>
+        <div style="padding: 0 13px 0 15px;">
+            <span style="color: #999;font-size: 13px;">注：充值成功后不可退款，且活动期间每张充值卡限购买一次</span>
+        </div>
+
+        <ul class="clearfix" style="visibility: visible;width: 100%;display: inline-block;">
+            <volist name='rules' id='rule' key="k">
+                <li class="goods-card" style="list-style-type:none;height: auto;min-height: 0;float: left;width: 48%;">
+                    <div class="weui-panel__bd text-center">
+                        <div class="weui-media-box weui-media-box_appmsg base-padding recharge-money recharge-bg" style="margin-right: 0;border: 0;">
+                            <div><img src="<{$rule.img}>" style="width: 100%;display: block;border-radius: 5px 5px 0 0;"/></div>
+                        </div>
+                        <div class="weui-media-box weui-media-box_appmsg base-padding recharge-bg" style="text-align: center;margin-left: 15px;font-size: 17px;border-radius: 0 0 5px 5px;">
+                            <p class="recharge" style="width: 100%;border-radius: 0 0 5px 5px;margin: 0;font-size: 1em;color: #777;">
+                                <label style="font-weight: lighter;" money='<{$rule.money}>' info='<{$rule.info}>' guid='<{$rule.guid}>'><{$rule.info}></label>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            </volist>
+        </ul>
+        <!-- 支付 -->
+        <div class="recharge-button content-margin base-margin-2x">
+            <button class="weui-btn weui-btn_primary pay-recharge-btn" style='display:none;'><i class="fa fa-weixin" aria-hidden="true"></i> 微信支付</button>
+        </div>
+    </div>
+    <!-- 充值成功弹窗 -->
+    <div class="js_dialog success_dialog" style="display: none;">
+        <div class="weui-mask"></div>
+        <div class="weui-dialog">
+            <div class="weui-dialog__hd"><strong class="weui-dialog__title">充值成功</strong></div>
+            <div class="weui-dialog__bd">
+                <p>充值金额：¥<span class="recharge-money-show"></span>.00。</p>
+                <p>充值卡类型：<span class="card-name"></span></p>
+                <p>充值卡号：<span class="card-code"></span></p>
+            </div>
+            <div class="weui-dialog__ft">
+                <a href="javascript:window.location.reload();" class="weui-dialog__btn weui-dialog__btn_default">继续充值</a>
+                <a href="<{:U('Vip/index')}>" class="weui-dialog__btn weui-dialog__btn_primary">会员中心</a>
+            </div>
+        </div>
+    </div>
+    <!-- 充值失败弹窗 -->
+    <div class="js_dialog error-dialog" style="display: none;">
+        <div class="weui-mask"></div>
+        <div class="weui-dialog">
+            <div class="weui-dialog__bd error-info"></div>
+            <div class="weui-dialog__ft">
+                <a href="<{:U('Vip/index')}>" class="weui-dialog__btn weui-dialog__btn_default">会员中心</a>
+                <a href="javascript:$('.error-dialog').hide();" class="weui-dialog__btn weui-dialog__btn_primary">重新输入</a>
+            </div>
+        </div>
+    </div>
+    <include file="Public/footer-shop" />
+</block>
+<block name='footer-js'>
+<script>
+    var params = {};
+
+    //底部栏图标选中变色
+    shop_item_init(false);
+    $('.menu-vip').addClass('weui-bar__item_on');
+    $('.vip-menu-icon').attr('src', "__PUBLIC__/images/Mobile/icon/menu-vip.png");
+
+    //返回
+    $('.back-btn').on('click', function(){
+        window.location.href="<{:U('index')}>";
+    });
+
+    //充值金额选择
+    $('.recharge-money').on('click', function(){
+        $('.recharge').css('color','#777');
+        $(this).siblings().find('.recharge').css('color','#d4a77E');
+
+        params['guid'] = $(this).siblings().find('.recharge').children().attr('guid');
+
+        $('.pay-recharge-btn').show();
+    });
+
+    //支付按钮点击事件
+    $('.pay-recharge-btn').on('click', function(){
+        $.post("<{:U('Vip/pre_recharge_handle')}>", params, function(data){
+            if(data['code'] == 0){
+                window.location.href = "<{:U('Index/recharge_pay')}>?no="+data['pre_order'];
+            }else{
+                alert(data.message);
+                return false;
+            }
+        });
+    });
+
+    //支付成功与否
+    $('.user-sn-btn').on('click', function(){
+        var code = $('.sn-input').val();
+
+        if(!code)
+            return;
+
+        $.post("<{:U('exchange_recharge_card_handle')}>", {code:code}, function(data){
+            if(data['status'] == 0){
+                $('.recharge-money-show').text(data['sn_info']['money']);
+                $('.card-code').text(code);
+                $('.card-name').text(data['sn_info']['card_name']);
+
+                $('.success_dialog').show();
+            }else{
+                $('.error-info').text(data['info']);
+                $('.error-dialog').show();
+            }
+        });
+    });
+</script>
+</block>

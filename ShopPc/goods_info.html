@@ -1,0 +1,116 @@
+<extend name="Public/base-shop"/>
+<block name='head-link'>
+    <link href="/Public/plugins/mdater/zepto.mdater.css" rel="stylesheet">
+</block>
+<block name='content'>
+        <div class="header-index topbar">
+            <div class="weui-flex">
+                <div class="weui-flex__item">
+                    <div class="placeholder"><span class="back-btn cursor-pointer"><i class="iconfont icon-xiangzuo1" aria-hidden="true"></i>返回</span></div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder text-center">商品详情</div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder"></div>
+                </div>
+            </div>
+        </div>
+
+<!--        <div class="shop-content header-margin header-logo">
+            <div style="height: 40px;background: #000 url(/Public/web/images/logo.png) no-repeat center;background-size: 25%;margin: 0 auto;"></div>
+        </div>-->
+
+        <!-- 右边悬浮菜单 -->
+        <div class="gotop fade-fast-transition">
+            <div class="panel panel-wechat text clearfix fade-fast-transition" style="display: none;">
+                <img class="image" src="__PUBLIC__/images/wechat_qrcode.jpg" alt="亚历山达冰淇淋微信二维码">
+                <div class="block">
+                    <div class="name">亚历山达冰淇淋</div>
+                    <p class="part">微信扫描二维码关注我们</p>
+                </div>
+            </div>
+            <ul class="list" style="list-style: none;">
+                <li class="nav-item">
+                    <a class="link" href="#" style="padding: 5px;" title="返回顶部"><i class="icon-dingbu iconfont goTop cursor-pointer" style="font-size: 25px;"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a href="javascript:;" class="link weui-tabbar__item menu-cart" title="购物车">
+                    <span class="weui-tabbar_span">
+                        <img src="__PUBLIC__/images/Mobile/icon/menu-cart-u.png" alt="Alexander's" class="weui-tabbar__icon cart-menu-icon">
+                        <span class="weui-badge cart-count">0</span>
+                    </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<{:U('shopPc/index')}>" class="weui-tabbar__item menu-shop link">
+                        <span class="weui-tabbar_span">
+                            <img src="__PUBLIC__/images/Mobile/icon/menu-home-u.png" alt="Alexander's" class="weui-tabbar__icon shop-menu-icon">
+                        </span>
+                        <p class="weui-tabbar__label" style="margin-left: 1px;">返回</p>
+                        <p class="weui-tabbar__label" style="margin-left: 1px;">商城</p>
+                    </a>
+                </li>
+                <li class="nav-item follow-us"> <a class="link" href="javascript:void(0);" style="border-bottom: 0;">
+                    <p style="font-size: 12px;">关注</p>
+                    <p style="font-size: 12px;">我们</p>
+                </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="content shop-content">
+            <div class="goods-info popup-goods-content weui-flex" style="border: 1px solid;border-bottom: none;" name='<{$goods_info.name}>' guid="<{$goods_info.guid}>" price='<{$goods_info.price}>' pre_sell='<{$goods_info.is_pre_sell}>' send_start_date='<{$goods_info.send_start_date}>' optional="<{$item.optional}>">
+                <div class="weui-flex__item img-box-height">
+                    <div class="img-box" style='height:100%;background-image: url("<{$goods_info.img}>?x-oss-process=image/resize,w_750/format,jpg/quality,Q_80");'></div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="goods-control">
+                        <div style="width: 100%;">
+                            <div class="modal-name"><{$goods_info.name}></div>
+                            <div class="modal-price">
+                                <neq name="goods_info.base_price" value="$goods_info.price">
+                                    <p class="original_price discounted-price" style="margin-top:5px;margin-right: 25px;float: left;">¥<{$goods_info.base_price}> </p>
+                                </neq>
+                                <p class="goods_info-price">¥<{$goods_info.price}></p>
+                                <p class="sub-text goods_info-der">(<{$goods_info.unit}>)</p>
+                                <p>运费： 满168元免运费、免配送费。</p>
+                            </div>
+                        </div>
+                        <div class='text-right modal-number'>
+                            <!-- <button class="weui-btn weui-btn_mini weui-btn_primary weui-btn_number item-minus" column='<{$goods_info.column_guid}>' item='<{$goods_info.guid}>'><i class="iconfont icon-jianhao"></i></button>
+                            <span class='goods-number number-<{$goods_info.guid}>'><{$num}></span>
+                            <button class="weui-btn weui-btn_mini weui-btn_primary weui-btn_number item-plus" column='<{$goods_info.column_guid}>' item='<{$goods_info.guid}>'><i class="iconfont icon-jiahao1"></i></button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-deail">
+                <eq name="goods_info_value" value='1'>
+                    <volist name="goods_info.info" id="info">
+                        <{$info}>
+                    </volist>
+                    <else />
+                    <{$goods_info.info}>
+                </eq>
+            </div>
+        </div>
+
+    <!-- 底部冒泡信息 -->
+    <div class="tooltip">
+        <span class="tooltiptext tooltip-position-menu" style="bottom: 13.5rem;">Tooltip text</span>
+    </div>
+    <include file="Public/footer-shop" />
+</block>
+<block name='footer-js'>
+    <script>
+        //返回
+        $('.back-btn').on('click', function(e){
+            window.location.href = "<{:U('ShopPc/index')}>";
+        });
+
+        if(local_storage['sel_cache']){
+            shop_item_init(false);
+        }
+    </script>
+</block>

@@ -1,0 +1,354 @@
+<extend name="Public/base-shop" />
+<block name='head-link'>
+</block>
+<block name='content'>
+    <div class="shop-cart-page gray-bg">
+        <div class="header topbar">
+            <!-- 顶部栏 -->
+            <div class="weui-flex">
+                <div class="weui-flex__item">
+                    <div class="placeholder"><span class="back-btn cursor-pointer"><i class="iconfont icon-xiangzuo1"></i>返回</span></div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder text-center">订单详情</div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOGO -->
+        <div class="header-margin header-logo vip-logo">
+            <div style="height: 80px;background: #000 url(/Public/web/images/logo.png) no-repeat center;background-size: 25%;margin: 0 auto;"></div>
+        </div>
+
+        <!-- 右边悬浮菜单 -->
+        <div class="gotop fade-fast-transition">
+            <div class="panel panel-wechat text clearfix fade-fast-transition" style="display: none;">
+                <img class="image" src="__PUBLIC__/images/wechat_qrcode.jpg" alt="亚历山达冰淇淋微信二维码">
+                <div class="block">
+                    <div class="name">亚历山达冰淇淋</div>
+                    <p class="part">微信扫描二维码关注我们</p>
+                </div>
+            </div>
+            <ul class="list" style="list-style: none;">
+                <li class="nav-item">
+                    <a class="link" href="#" style="padding: 5px;" title="返回顶部"><i class="icon-dingbu iconfont goTop cursor-pointer" style="font-size: 25px;"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a href="<{:U('Vip/order_list')}>" class="weui-tabbar__item menu-shop link">
+                        <span class="weui-tabbar_span">
+                            <img src="__PUBLIC__/images/Mobile/icon/menu-home-u.png" alt="Alexander's" class="weui-tabbar__icon shop-menu-icon">
+                        </span>
+                        <p class="weui-tabbar__label" style="margin-left: 1px;">返回</p>
+                        <p class="weui-tabbar__label" style="margin-left: 1px;">上页</p>
+                    </a>
+                </li>
+                <li class="nav-item follow-us"> <a class="link" href="javascript:void(0);" style="border-bottom: 0;">
+                    <p style="font-size: 12px;">关注</p>
+                    <p style="font-size: 12px;">我们</p>
+                </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 左边悬浮分类栏 -->
+        <ul class="menu-ul">
+            <li>
+                <a class="goods-styles item-tab-menu" href="<{:U('ShopPc/index')}>"><span class="slide-text cursor-pointer">商城主页</span></a>
+            </li>
+            <li>
+                <a class="goods-styles item-tab-menu" href="<{:U('index')}>"><span class="slide-text cursor-pointer">个人中心</span></a>
+            </li>
+            <li>
+                <a class="goods-styles item-tab-menu" href="<{:U('info')}>"><span class="slide-text cursor-pointer">个人资料</span></a>
+            </li>
+            <li>
+                <a class="goods-styles item-tab-menu" href="<{:U('card')}>"><span class="slide-text cursor-pointer">优惠券</span></a>
+            </li>
+        </ul>
+
+        <!--============订单详情=============-->
+        <div class="content">
+            <div class="weui-panel weui-panel_access">
+                <div class="weui-panel__hd">订单商品列表</div>
+                <div class="weui-panel__bd">
+                    <volist name='orderInfo.goods' id='column' key="i">
+                        <eq name="column.type" value="0">
+                            <volist name='column.items' id='goods' key="j">
+                                <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+                                    <div class="weui-media-box__hd">
+                                        <img class="weui-media-box__thumb" src="<{$goods.img}>" alt="Alexander's">
+                                    </div>
+                                    <div class="weui-media-box__bd">
+                                        <h4 class="weui-media-box__title"><{$goods.name}></h4>
+                                        <p class="weui-media-box__desc">¥<{$goods.price}>.00 * <{$goods.num}></p>
+                                    </div>
+                                </a>
+                            </volist>
+                        <else />
+                            <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
+                                <div class="weui-media-box__hd">
+                                    <img class="weui-media-box__thumb" src="<{$column['items'][0]['img']}>" alt="Alexander's">
+                                </div>
+                                <div class="weui-media-box__bd">
+                                    <h4 class="weui-media-box__title"><{$column.column_name}>(<{$column.sumNum}>杯)</h4>
+                                    <p class="weui-media-box__desc">¥<{$column.payPrice}>.00(
+                                    <volist name='column.items' id='goods' key="j">
+                                        <{$goods.name}>*<{$goods.num}> | 
+                                    </volist>
+                                    ) </p>
+                                </div>
+                            </a>
+                        </eq>
+                    </volist>
+                </div>
+                <div class="weui-panel__ft">
+                    <div class="weui-cell weui-cell_access weui-cell_link order-price">
+                        <div class="weui-cell__bd">总价: ¥<{$orderInfo.price}>.00<br />
+                        运费: ¥<{$orderInfo.freightMoney}>.00</div>
+                    </div>    
+                </div>
+            </div>
+
+            <neq name='orderInfo.gift_info' value=''>
+                 <div class="weui-panel weui-panel_access">
+                     <div class="weui-panel__hd">赠送好礼</div>
+                     <div class="weui-panel__bd">
+                         <div class="weui-media-box weui-media-box_appmsg">
+                             <div class="weui-media-box__hd">
+                                 <img class="weui-media-box__thumb gift-info-title" src="<{$orderInfo.gift_info.img}>" alt="Alexander's" guid='<{$orderInfo.gift_info.guid}>'>
+                             </div>
+                             <div class="weui-media-box__bd">
+                                 <h4 class="weui-media-box__title gift-info-title" guid='<{$orderInfo.gift_info.guid}>'><{$orderInfo.gift_info.name}></h4>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+            </neq>
+
+            <neq name='orderInfo.special' value="">
+            <div class="weui-panel">
+                <div class="weui-panel__hd">附加商品</div>
+                <div class="weui-panel__bd">
+                    <volist name='orderInfo.special' id='item'>
+                    <div class="weui-media-box weui-media-box_text">
+                        <h4 class="weui-media-box__title"><{$item.name}><span class="pull-right">+ <{$item.price}>.00元</span></h4>
+                    </div>
+                    </volist>
+                </div>
+            </div>
+            </neq>
+
+            <div class="weui-panel">
+                <div class="weui-panel__hd">配送地址</div>
+                <div class="weui-panel__bd">
+                    <div class="weui-media-box weui-media-box_text">
+                        <h4 class="weui-media-box__title"><{$orderInfo.address.name}> <{$orderInfo.address.tel}></h4>
+                        <p class="weui-media-box__desc"><{$orderInfo.address.address}> <{$orderInfo.address.floor}></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="weui-panel">
+                <div class="weui-panel__hd">配送时间</div>
+                <div class="weui-panel__bd">
+                    <div class="weui-media-box weui-media-box_small-appmsg">
+                        <div class="weui-cells">
+                            <div class="weui-cell">
+                                <div class="weui-cell__hd"><label class="weui-label">日期:</label></div>
+                                <div class="weui-cell__bd">
+                                    <label class="weui-label"><{$orderInfo.sendDay}></label>
+                                </div>
+                            </div>
+                            <div class="weui-cell">
+                                <div class="weui-cell__hd">
+                                    <label for="" class="weui-label">时间:</label>
+                                </div>
+                                <div class="weui-cell__bd">
+                                    <label class="weui-label order-send-time"><{$orderInfo.sendTime}></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="weui-panel">
+                <div class="weui-panel__hd">物流信息</div>
+                <div class="weui-panel__bd">
+                    <div class="weui-media-box weui-media-box_small-appmsg">
+                        <div class="weui-cells">
+                            <div class="weui-cell">
+                                <div class="weui-cell__hd"><label class="weui-label">物流进度:</label></div>
+                                <div class="weui-cell__bd new more-btn cursor-pointer" style="font-size: 13px;">
+                                    <label class="weui-label" style="width: 100%;"><{$latestLogisticInfo.ftime}></label>
+                                    <label class="weui-label" style="width: 100%;"><{$latestLogisticInfo.context}></label><br/>
+                                </div>
+                                <div class="weui-cell__bd all" style="font-size: 13px; display: none">
+                                    <volist name="logisticInfo" id="item">
+                                        <label class="weui-label" style="width: 100%;"><{$item.ftime}></label>
+                                        <label class="weui-label" style="width: 100%;"><{$item.context}></label><br/>
+                                    </volist>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="weui-panel">
+                <div class="weui-panel__hd">支付详情</div>
+                <div class="weui-panel__bd">
+                    <div class="weui-media-box weui-media-box_small-appmsg">
+                        <div class="weui-cells">
+                            <neq name='orderInfo.integral' value="">
+                            <div class="weui-cell">
+                                <div class="weui-cell__bd">积分支付:</div>
+                                <div class="weui-cell__bd">
+                                    <label class="weui-label"><{$orderInfo.integral}></label>
+                                </div>
+                            </div>
+                            </neq>
+                            <neq name='orderInfo.balance' value="">
+                            <div class="weui-cell">
+                                <div class="weui-cell__bd">余额支付:</div>
+                                <div class="weui-cell__bd">
+                                    <label class="weui-label"><{$orderInfo.balance.price}></label>
+                                </div>
+                            </div>
+                            </neq>
+                            <neq name='orderInfo.cardInfo' value="">
+                                <div class="weui-cell">
+                                    <div class="weui-cell__bd">优惠券:</div>
+                                    <div class="weui-cell__bd">
+                                        <label class="weui-label order-send-time"><{$orderInfo.cardInfo.name}></label>
+                                    </div>
+                                </div>
+                            </neq>
+                            <div class="weui-cell">
+                                <div class="weui-cell__bd">现金支付:</div>
+                                <div class="weui-cell__bd">
+                                    <label class="weui-label"><{$orderInfo.payPrice}></label>
+                                </div>
+                            </div>
+                            <div class="weui-cell">
+                                <div class="weui-cell__bd">支付方式:</div>
+                                <div class="weui-cell__bd">
+                                    <label class="weui-label payment-text"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <neq name="orderInfo.Message" value="">
+            <div class="weui-cells__title">留言信息</div>
+                <div class="weui-cells weui-cells_form">
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <textarea class="weui-textarea message-input" placeholder="需要手写贺卡?开具商业发票?等等一些您的附加要求……" rows="4"><{$orderInfo.Message}></textarea>
+                    </div>
+                </div>
+            </div>
+            </neq>
+        </div>
+
+        <!-- 底部状态栏 -->
+        <div class="cart-footer">
+            <div class="weui-flex">
+                <div class="weui-flex__item">
+                    <div class="placeholder">
+                        状态:<{$orderInfo['status_msg']}>
+                    </div>
+                </div>
+                <div>
+                    <div class="placeholder">
+                        <eq name='orderInfo.can_pay' value="1">
+                        <a href="javascript:" class="weui-btn weui-btn_mini weui-btn_warn order-cancle-confirm-btn cursor-pointer">取消订单</a>
+                        <a href="<{:U('/ShopPc/payByAlipay')}>?no=<{$orderInfo.orderNo}>" class="weui-btn weui-btn_mini weui-btn_primary pay-btn cursor-pointer">立即支付</a>
+                        </eq>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 订单取消时的弹窗 -->
+        <div class="js_dialog" id="cancle-confirm-dialog" style="display: none;">
+            <div class="weui-mask"></div>
+            <div class="weui-dialog">
+                <div class="weui-dialog__hd"><strong class="weui-dialog__title">请确认</strong></div>
+                <div class="weui-dialog__bd">真的要取消这张订单吗？</div>
+                <div class="weui-dialog__ft">
+                    <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default cursor-pointer">取消</a>
+                    <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary order-cancle-btn cursor-pointer">确认</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 订单取消，确认后的弹窗 -->
+    <div id="loadingToast" style="display: none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <i class="weui-loading weui-icon_toast"></i>
+            <p class="weui-toast__content">订单处理中</p>
+        </div>
+    </div>
+</block>
+<block name='footer-js'>
+    <!-- 等于标签,判断是否是微信支付 -->
+    <eq name='orderInfo.payType' value='wechatpay'>
+ 	<script>
+        $('.payment-text').text('在线支付');
+	</script>
+    <else />
+    <script>
+        $('.payment-text').text('货到付款');
+    </script>
+    </eq>
+    <script>
+        $('.page').addClass('shop-content');
+
+        //返回
+        $('.back-btn').on('click', function(){
+            window.location.href="<{:U('order_list')}>";
+        });
+
+        //取消订单操作
+        $('.order-cancle-confirm-btn').on('click', function(){
+            $('#cancle-confirm-dialog').show();
+        });
+
+        //取消--->取消订单操作
+        $('.weui-dialog__btn_default').on('click', function(){
+            $('#cancle-confirm-dialog').hide();
+        });
+
+        //确认--->取消订单操作
+        $('.order-cancle-btn').on('click', function(){
+            $('#cancle-confirm-dialog').hide();
+            $('#loadingToast').show();
+            var params = {
+                no : "<{$orderInfo.orderNo}>"
+            };
+
+            $.post("<{:U('order_cancle_handle')}>", params, function(data){
+                if(data['code'] == 0){
+                    location.reload();
+                }else{
+                    $('#loadingToast').hide();
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $('.more-btn').on('click', function(){
+            $('.new').hide();
+            $('.all').show();
+        })
+    </script>
+</block>

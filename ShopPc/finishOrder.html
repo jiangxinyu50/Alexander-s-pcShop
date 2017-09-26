@@ -1,0 +1,50 @@
+<extend name="Public/base-shop" />
+<block name='content'>
+    <div class="sucessful order-prompt" style="display: block;">
+        <div class="icon-box">
+            <i class="weui-icon-success weui-icon_msg"></i>
+            <div class="icon-box__ctn" style="margin-top: 10px;">
+                <h2 class="icon-box__title">购买成功</h2>
+                <p class="icon-box__desc">我们会尽快安排订单配送</p>
+                <p class="icon-box__desc">可在"个人中心"——"订单信息"处查看该订单详情</p>
+            </div>
+            <div class="promt-btn_div">
+                <button id="user_btn" class="general-btn sucess-btn" style="">订单详情</button>
+                <button id="back-to_shop" class="general-btn sucess-btn">返回商城</button>
+            </div>
+        </div>
+    </div>
+    <div class="failed order-prompt" style="display: none;">
+        <div class="icon-box">
+            <i class="weui-icon-warn weui-icon_msg"></i>
+            <div class="icon-box__ctn" style="margin-top: 10px;">
+                <h3 class="icon-box__title">购买失败</h3>
+                <p class="icon-box__desc">请您尝试继续付款或者重新下单</p>
+            </div>
+        </div>
+        <div class="promt-btn_div">
+            <button id="go-on_pay" class="general-btn fail-btn">继续支付</button>
+            <button id="go-to_shop" class="general-btn fail-btn">重新下单</button>
+        </div>
+    </div>
+</block>
+<block name='footer-js'>
+    <script>
+        $('.footer-bottom').remove();
+
+        //跳转页面
+        $('#user_btn').on('click',function(){
+            window.location.href="<{:U('Vip/order_details')}>?no=<{$orderInfo['orderNo']}>"
+        });
+        $('#back-to_shop').on('click',function(){
+            window.location.href="<{:U('index')}>"
+        });
+        //----------------成功失败分界线-----------------
+        $('#go-on_pay').on('click',function(){
+            window.location.href="<{:U('Vip/order_list')}>"
+        });
+        $('#go-to_shop').on('click',function(){
+            window.location.href="<{:U('index')}>"
+        });
+    </script>
+</block>

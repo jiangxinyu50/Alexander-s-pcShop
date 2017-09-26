@@ -1,0 +1,652 @@
+<extend name="Public/base-shop" />
+<block name='head-link'>
+    <link rel="stylesheet" href="__PUBLIC__/plugins/swiper/dist/css/swiper.min.css">
+</block>
+<block name='content'>
+    <!-- 返回顶部 -->
+    <i class="iconfont icon-dingbu back_up cursor-pointer" aria-hidden="true"></i>
+    <!-- 右边悬浮菜单 -->
+    <div class="gotop fade-fast-transition">
+        <div class="panel panel-wechat text clearfix fade-fast-transition" style="display: none;">
+            <img class="image" src="__PUBLIC__/images/wechat_qrcode.jpg" alt="亚历山达冰淇淋微信二维码">
+            <div class="block">
+                <div class="name">亚历山达冰淇淋</div>
+                <p class="part">微信扫描二维码关注我们</p>
+            </div>
+        </div>
+        <ul class="list" style="list-style: none;">
+            <li class="nav-item">
+                <a class="link" href="#" style="padding: 5px;" title="返回顶部"><i class="icon-dingbu iconfont goTop cursor-pointer" style="font-size: 25px;"></i></a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:;" class="link weui-tabbar__item menu-cart" title="购物车">
+                    <span class="weui-tabbar_span">
+                        <img src="__PUBLIC__/images/Mobile/icon/menu-cart-u.png" alt="Alexander's" class="weui-tabbar__icon cart-menu-icon">
+                        <span class="weui-badge cart-count">0</span>
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item follow-us"> <a class="link" href="javascript:void(0);" style="border-bottom: 0;">
+                <p style="font-size: 12px;">关注</p>
+                <p style="font-size: 12px;">我们</p>
+            </a>
+            </li>
+        </ul>
+    </div>
+    <!-- 左边悬浮分类栏 -->
+    <ul class="menu-ul pop1">
+        <li>
+            <a class="goods-styles item-tab-menu" href="<{:U('../index')}>"><span class="slide-text cursor-pointer">官 网</span></a>
+        </li>
+        <li>
+            <a class="goods-styles item-tab-menu" href="<{:U('Vip/index')}>"><span class="slide-text cursor-pointer">个人中心</span></a>
+        </li>
+        <volist name="column" id="item">
+          <li class="column-change">
+              <a class="goods-styles item-tab-menu item-<{$item.guid}>" href="#<{$item.guid}>"><span class="slide-text cursor-pointer"><{$item.name}></span></a>
+          </li>
+        </volist>
+    </ul>
+
+    <!-- 顶部栏 -->
+	<div class="header-index">
+        <div class="weui-flex">
+            <div class="weui-flex__item">
+                <div class="send-notify">
+                    <eq name='not_time_sel' value='1'>
+                        现在下单，最快72小时内可送达
+                    <else />
+                        <eq name='today_enable' value='1'>
+                        现在下单，最快今天可送达
+                        <else />
+                        现在下单，最快明天可送达
+                        </eq>
+                    </eq>
+                </div>
+                <div class="send-sub-notify">
+                    订单满168元免运费。
+                </div>
+            </div>
+
+            <div class="overbox"></div>
+            <div>
+                <div class="placeholder city-btn cursor-pointer">
+                <{$city_info.city}> <i class="iconfont icon-xiangxia1"></i>
+                </div>
+
+                <div class="cityList">
+                    <div class="cityBox">
+                        <div class="M-cityList scrollStyle">
+                            <ul style="list-style: none;">
+                                <li>
+                                    <label>自主配送城市</label>
+                                    <volist name='city_list' id='city'>
+                                        <if condition="$city['delivery_type'] eq 'owner'">
+                                            <a class="city_self cursor-pointer city-select">
+                                                <span class="selfD_city" id="city-<{$city['guid']}>" city='<{$city["city"]}>' style="vertical-align: middle"><{$city['city']}></span>
+                                            </a>
+                                        </if>
+                                    </volist>
+                                </li>
+                                <li>
+                                    <label>顺丰配送城市</label>
+                                    <volist name='city_list' id='city'>
+                                        <if condition="$city['delivery_type'] eq 'thirdparty'">
+                                            <a class="city_self cursor-pointer city-select">
+                                                <span class="selfD_city" id="city-<{$city['guid']}>" city='<{$city["city"]}>' style="vertical-align: middle"><{$city['city']}></span>
+                                            </a>
+                                        </if>
+                                    </volist>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 轮播banner -->
+    <div class="banner-content">
+        <div class="swiper-container banner-swiper-container gallery-top">
+            <div class="swiper-wrapper">
+                <volist name='banner' id='item'>
+                    <if condition="$item.type neq ad">
+                        <eq name='item.type' value='link'>
+                            <div class="swiper-slide">
+                                <div class="index-banner-link shop-banner" style="background-image: url('<{$item.img}>');" link="<{$item.params.url}>"></div>
+                            </div>
+                            <else />
+                            <div class="swiper-slide">
+                                <div class="index-banner-img shop-banner" style="background-image: url('<{$item.img}>');" column="<{$item.params.column_guid}>" guid="<{$item.params.goods_guid}>"></div>
+                            </div>
+                        </eq>
+                        <else />
+                        <div class="swiper-slide">
+                            <div class="index-banner-ad shop-banner" style="background-image: url('<{$item.img}>');" id="<{$item.id}>"></div>
+                        </div>
+                    </if>
+                </volist>
+            </div>
+            <!-- 上下页 -->
+            <div class="swiper-button-prev swiper-button-white"></div>
+            <div class="swiper-button-next swiper-button-white"></div>
+        </div>
+        <!-- 自定义分页器 -->
+        <div class="swiper-pagination pagination_display"></div>
+    </div>
+
+    <div class="content shop-index shop-content">
+        <!-- 栏目分类 -->
+        <div class="nav-shelf" style="display: none;">
+            <div class="swiper-container column-swiper-container" style="padding: 15px 0;">
+                <div class="swiper-wrapper">
+                    <volist name="column" id="item">
+                        <a class="goods-styles swiper-slide item-tab-menu item-<{$item.guid}>" href="#<{$item.guid}>"> <span class="slide-text cursor-pointer"><{$item.name}></span> </a>
+                    </volist>
+                </div>
+            </div>
+        </div>
+        <!--===============产品列表================-->
+        <div  style="padding-top: 20px;">
+        <!-- 产品栏目 -->
+        <volist name='column' id='item' key='i'>
+            <hr style="height:2px;border:none;background-color: #2b2b2b;" />
+            <div class="shop-goods" id="<{$item.guid}>" min='<{$item.min_num}>' name='<{$item.name}>' optional="<{$item.optional}>" box="<{$item.box_num}>" multiple="<{$item.need_box_multiple}>">
+                <!-- 商品区域、产品详情 -->
+                <div class="item-content">
+                    <div class="weui-flex weui-flex-width">
+                    <ul class="goods-list clearfix" style="list-style: none;">
+                        <volist name='item.goods' id='goods' key='j'>
+                        <li class="goods-card-width goods-card goods-item goods-info goods-card-style" name='<{$goods.name}>' guid="<{$goods.guid}>" price='<{$goods.price}>' pre_sell='<{$goods.is_pre_sell}>' send_start_date='<{$goods.send_start_date}>' optional="<{$item.optional}>">
+                            <div class='item-img-box class_outer' style="padding: 15px 15px 0;">
+                                <img src="<{$goods.img}>" alt="" class='img-response item-img goods-link goods-card-img cursor-pointer'>
+                                <!-- 商品图片遮幕 -->
+                                <div class="class_cover goods-link cursor-pointer">
+                                    <p style="line-height: 2;padding-top: 20%;">
+                                        <neq name='goods.unit' value="">
+                                            <span>— <{$goods.unit}> —</span>
+                                        </neq>
+                                    </p>
+                                    <p style="line-height: 2;"><{$goods.summary}></p>
+                                </div>
+                                <eq name='goods.is_new' value='1'>
+                                    <span class="goods-weui-badge new_mark-pc">New</span>
+                                </eq>
+                                <!-- 模仿折扣价写法,显示优惠标识 -->
+                                <neq name="goods.base_price" value="$goods.price">
+                                    <span class="goods-weui-badge discount_mark">限时特惠</span>
+                                </neq>
+                            </div>
+
+                            <div class="placeholder goods-item-text">
+                                <h4 class='goods-name-pc goods-link cursor-pointer'><{$goods.name}></h4>
+                                <div class="goods-summary goods-link cursor-pointer" style="display: none;">
+                                    <{$goods.summary}>
+                                </div>
+
+                                <div class="goods-prices goods-link cursor-pointer" style="font-size: 16px;">
+                                    <!-- 现价 -->
+                                    <span class="present_price" price="<{$goods.price}>">¥ <{$goods.price}>.00</span>
+                                    <!-- 划去原价 -->
+                                    <neq name="goods.base_price" value="$goods.price">
+                                        <span class="discounted-price original_price" bprice="<{$goods.base_price}>">¥ <{$goods.base_price}>.00</span>
+                                    </neq>
+                                </div>
+
+                                <div class='text-right item-btn'>
+                                    <button class="weui-btn weui-btn_mini weui-btn_primary weui-btn_number cursor-pointer item-minus" column='<{$item.guid}>' item='<{$goods.guid}>'><i class="iconfont icon-jianhao"></i></button>
+                                    <span class='goods-number number-<{$goods.guid}>'>0</span>
+                                    <button class="weui-btn weui-btn_mini weui-btn_primary weui-btn_number cursor-pointer item-plus" column='<{$item.guid}>' item='<{$goods.guid}>'><i class="iconfont icon-jiahao1"></i></button>
+                                </div>
+                            </div>
+                        </li>
+                        </volist>
+                    </ul>
+                    </div>
+                </div>
+
+            </div>
+        </volist>
+        </div>
+        <!-- 赠送好礼弹出层 -->
+        <neq name="gift_info" value="">
+        <div class='gift-modal'>
+            <div class="weui-mask"></div>
+            <div class="weui-dialog gift-content">
+                <i class="iconfont icon-guanbi2 modal-close gift-close-btn"></i>
+                <div class="gift-banner" style="background-image: url('<{$gift_info.img}>')"></div>
+                <h3><{$gift_info.name}></h3>
+                <div class="weui-dialog__bd">
+                <{$gift_info.summary}>
+                </div>
+                <div class="weui-dialog__ft">
+                    <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary gift-close-btn">知道了</a>
+                </div>
+            </div>
+        </div>
+        </neq>
+
+        <!-- 城市选择弹出层 -->
+        <div class="city-sel" id='city-sel-modal' style='display: none;'>
+            <div class="weui-mask city-sel-mask"></div>
+            <div class="weui-dialog">
+                <div class="weui-dialog__hd">
+                    <strong class="weui-dialog__title">确定您的配送城市</strong>
+                </div>
+                <div class='city-sel-content'>
+                    <volist name='city_list' id='city' mod="2" key='i'>
+                    <eq name="mod" value="0">
+                    <div class="weui-flex text-center">
+                        <div class="weui-flex__item"><div class="city-item" id="city-<{$city_list[$i-1]['guid']}>" city='<{$city_list[$i-1]["city"]}>'><{$city_list[$i-1]['city']}></div></div>
+                        <neq name="city_list[$i]['city']" value="">
+                        <div class="weui-flex__item"><div class="city-item" id="city-<{$city_list[$i]['guid']}>" city='<{$city_list[$i]['city']}>'><{$city_list[$i]['city']}></div></div>
+                        <else />
+                        <div class="weui-flex__item"></div>
+                        </neq>
+                    </div>
+                    </eq>
+                    </volist>
+            </div>
+            <div class="weui-dialog__ft">
+                <div class="weui-dialog__btn weui-dialog__btn_default city-sel-cancle-btn">取消</div>
+                <div class="weui-dialog__btn weui-dialog__btn_primary city-sel-btn">选择</div>
+            </div>
+        </div>
+
+        <!-- 错误信息或者提示信息 -->
+        <div class="error-dialog" style="display:none;">
+            <div class="weui-mask"></div>
+            <div class="weui-dialog">
+                <div class="weui-dialog__bd error-message"></div>
+                <div class="weui-dialog__ft">
+                    <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary index-dialog-btn">知道了</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- 底部冒泡信息 -->
+    <div class="tooltip">
+        <span class="tooltiptext tooltip-position-menu">Tooltip text</span>
+    </div>
+    <include file="Public/footer-shop" />
+</block>
+<block name='footer-js'>
+<script type="text/javascript" src="__PUBLIC__/plugins/swiper/dist/js/swiper.min.js"></script>
+<!--<script type="text/javascript" src="__PUBLIC__/assets-unify/plugins/jquery/jquery.min.js"></script>-->
+<!-- ---------数据条件判断赋值-------- -->
+<gt name='column_count' value='3'><!-- 大于标签,设置slider容器能够同时显示的slides数量 -->
+<script>
+    var column_show_count = 3.2;
+</script>
+<else />
+<script>
+    var column_show_count = 3;
+</script>
+</gt>
+
+<neq name='show_goods' value=''><!-- 不等于标签,设置选中城市后展现的缓存信息 -->
+<script>
+    var show_goods = <{:json_encode($show_goods)}>;
+    var redirect_guid = "<{$redirect_guid}>";
+</script>
+<else/>
+<script>
+    var show_goods = "";
+    var redirect_guid = "";
+</script>
+</neq>
+
+<neq name='gift_info' value="">
+<script type="text/javascript">
+    var has_gift = true;
+</script>
+<else />
+<script type="text/javascript">
+    var has_gift = false;
+</script>
+</neq>
+<!-- --------可重用函数定义-------- -->
+<script>
+//---------弹窗模块,可重用---------//
+function popup_func(){
+    close_toggle_modal();
+
+    $('.popup-modal').css("z-index", 5000);
+    $('.weui-tabbar').css("z-index", 5100);
+    $('.popup-content').addClass('weui-actionsheet_toggle');
+    $('.togger-mask').show(100);
+    $('.modal-close').show(100);
+
+    //弹出层内滚动条事件
+    if(!myScroll){
+        setTimeout(function(){
+            myScroll = new IScroll('.popup-content', {
+                mouseWheel: true
+            });
+        }, 800);
+    }else{
+        setTimeout(function () {
+            myScroll.refresh();
+        }, 800);
+    }
+}
+
+/*
+ *   商品详情弹出层
+ */
+function show_goods_modal(guid, optional){
+    var guid = guid;
+    var type = optional;
+    var num = $('.number-'+guid).text();
+
+    if(!guid || !type)
+        return;
+
+    //Jq AJAX load()方法加载商品信息
+    window.location.href = "<{:U('goods_info')}>/guid/"+guid+"/type/"+type+"/num/"+num+"";
+}
+
+/*
+ *   广告详情弹出层
+ */
+function show_ads_modal(id){
+    var params = {
+        id : id
+    };
+
+    //Jq AJAX load()方法加载商品信息
+    $('.modal-content').load("<{:U('ads_info')}>",params, function(){
+        popup_func();
+    });
+}
+</script>
+<!-- --------------功能函数--------—---- -->
+<script>
+var iScreenWidth = window.screen.width; //获得浏览器分辨率
+
+$(function(){
+    // 根据屏幕分辨率判断一些样式
+    if(iScreenWidth <= 1024){
+        $('.goods-summary').show();
+
+        $('.gotop').hide();
+        //监听事件，滚动条超过一定程度，显示“返回顶部”
+        window.addEventListener('scroll',function(){
+            var _scrollTop = document.body.scrollTop;
+            var $backUp = document.querySelector('.back_up');
+
+            if(_scrollTop > 200){
+                $backUp.classList.add('show');
+            }else{
+                $backUp.classList.remove('show');
+            }
+        },false);
+
+        $('.nav-shelf').show();
+        $('.menu-ul').hide();
+        //分类栏的swiper定义
+        var swiper = new Swiper('.column-swiper-container', {
+            slidesPerView: column_show_count,
+            spaceBetween: 15,
+            slidesPerView : 3,
+            freeMode: true
+        });
+        $('.tabbar-content').show();
+    }else{
+        $('.back_up').hide();
+        $('.nav-shelf').hide();
+        $('.menu-ul').show();
+
+/*        //监听事件，滚动条超过一定程度，显示“右浮菜单”
+        window.addEventListener('scroll',function(){
+            var _scrollTop = document.body.scrollTop;
+
+            if(_scrollTop > 150){
+                $('.gotop').show();
+            }else{
+                $('.gotop').hide();
+            }
+        },false);*/
+        $('.gotop').show();
+
+        $('.follow-us').mouseover(function(){
+            $('.panel-wechat').show();
+        });
+        $('.follow-us').mouseout(function(){
+            $('.panel-wechat').hide();
+        });
+
+        $('.tabbar-content').remove();
+    }
+    // 主页底部样式修改
+    $('.footer-bottom').css('background-color','#fff');
+    $('.weui-footer').css({
+        'background-color':'#1C1C20',
+        'padding':'26px 0',
+        'color':'#fff'
+    });
+    $('.weui-footer a').css('color','#fff');
+
+/*
+ *  轮播滚动banner事件
+ */
+// 根据分辨率来调整 swiper控件
+    if(iScreenWidth < 1024){
+        $('.pagination_display').remove();
+        $('.banner-swiper-container').removeClass('gallery-top');
+        var content = '<div class="swiper-pagination-banner"></div>';
+        $(".swiper-button-prev").before(content);
+
+        var swiper = new Swiper('.banner-swiper-container', {
+            pagination: '.swiper-pagination-banner',
+            paginationClickable: true,
+            prevButton :'.swiper-button-prev',
+            nextButton :'.swiper-button-next',
+            autoplay: 4000,
+            autoplayDisableOnInteraction: false,
+            loop: true
+        });
+    }else{ //自定义swiper pagination
+        var swiper = new Swiper('.banner-swiper-container', {
+            pagination: '.swiper-pagination',
+            paginationClickable: true,
+            prevButton :'.swiper-button-prev',
+            nextButton :'.swiper-button-next',
+            autoplay: 4000,
+            autoplayDisableOnInteraction: false,
+            loop: true,
+            paginationBulletRender: function (swiper, index, className) {
+                return '<volist name="banner" id="item" offset="0" length="3" key="k"><div class="' + className  + ' bullet">\
+                          <div class="bullet-slide" style="background-image: url(<{$item.img}>)">\
+                          <div class="bmbox"></div>\
+                          </div></div></volist>';
+            }
+        });
+        // 除了前面三个，后面统统移除
+        /*$(".swiper-pagination-bullets .swiper-pagination-bullet:gt(2)").remove();*/
+    }
+});
+
+// 如果有折扣价,样式更改
+$(function(){
+    // 折扣价格样式更改
+    if($('.present_price').siblings()){
+        $('.original_price').siblings().addClass('present-price_style');
+    }else{
+        $('.original_price').siblings().removeClass('present-price_style');
+    }
+});
+
+//城市与本地缓存不符，页面重载
+if(local_storage['city'] && local_storage['city'] != "<{$city_info.city}>"){
+
+    $.post("<{:U('citySelHandle')}>", {city: local_storage['city']}, function(data){
+        window.location.reload();
+    });
+}
+
+/*
+ *  城市选择事件
+ */
+var default_city = '<{$city_info.city}>';
+var sel_city = '<{$city_info.city}>';
+
+//城市选择
+$('.city-btn').on('click', function(e){
+
+    $('.overbox').show();
+
+    if($(".cityList").css("display")=="none"){
+        $(".cityList").show();
+    }else{
+        $(".cityList").hide();
+    }
+
+});
+// 点击遮幕事件
+/*$('.overbox').on('click',function(){
+    $('.cityList').hide();
+    $('.overbox').hide();
+});*/
+
+// 选择城市事件
+function judge_city(sel_city){
+    // 如果本地缓存的城市不存在或为空（这种情况肯定与我们所选择的城市不一样）...
+    if(sel_city != local_storage['city']){
+        local_storage['city_sel'] = 1;
+        local_storage['city'] = sel_city;
+
+        $.post("<{:U('citySelHandle')}>", {city: sel_city}, function(data){
+            clear_storge();
+            var url = "<{:U('index')}>?city_sel=1";
+            if(redirect_guid){
+                url += "&redirect="+redirect_guid;
+            }
+            window.location.href = url;
+        });
+    }else{
+        // 点击的城市与缓存的一样则不清缓存
+        window.location.href = '<{:U('index')}>?city_sel=1';
+    }
+}
+
+// 自主配送选择城市
+$('.city_self').on('click',function(){
+    var selfD_city = $(this).find('.selfD_city').text();
+
+    judge_city(selfD_city);
+});
+
+// 第三方配送选择城市
+$('.city_area').on('click',function(){
+    var thirdPartD_city = $(this).val();
+
+    judge_city(thirdPartD_city);
+});
+
+//城市选择与本地缓存不符，跳转至城市选择页面
+if(!has_gift && !local_storage['city_sel'] && !local_storage['sel_cache']){
+    $('.city-btn').text('请选择城市 ▼');
+    $('.overbox').show();
+    $(".cityList").show();
+}else{
+    shop_item_init(false);
+
+    if(show_goods){
+        show_goods_modal(show_goods['guid'], show_goods['optional']);
+    }
+} // 城市事件 end
+
+//分类切换效果
+//订单信息，选项卡切换特效等
+$('.item-tab-menu').on('click', function(){
+    $('.item-tab-menu').find('.slide-text').removeClass('slide-text_on');
+    $(this).find('.slide-text').addClass('slide-text_on');
+});
+
+//如果有好礼赠送,则弹出弹窗告知
+if(has_gift){
+    $('.gift-modal').show();
+}
+//赠送好礼关闭按钮事件
+$('.gift-close-btn').on('click', function(){
+    $('.gift-modal').hide();
+
+    if(!local_storage['city_sel'] && !local_storage['sel_cache']){
+        $('#city-sel-modal').show();
+    }
+});
+
+// ------------------------------------------------------------------------------------
+// 绑定DOM事件，点击商品列表产生的事件：弹出商品详情
+// 为了增加绑定效率，将click事件绑定在content上，然后goods-link的click事件都冒泡到content上处理
+// 所以bug有可能会出现在这里,冒泡顺序问题
+// ------------------------------------------------------------------------------------
+$('.content').on('click', '.goods-link', function(e){
+    var $item = $(this).parents('.goods-info');
+    var guid = $item.attr('guid');
+    var type = $item.attr('optional');
+    var num = $('.number-'+guid).text();
+
+    if(!guid || !type)
+        return;
+
+    //Jq AJAX load()方法加载商品信息
+    window.location.href = "<{:U('goods_info')}>/guid/"+guid+"/type/"+type+"/num/"+num+"";
+});
+
+// ------------------------------------------------------------------------------------
+// 点击顶部banner产生的事件:
+// 1.点击banner推荐商品、优惠广告,则弹出弹出层详情;
+// 2.点击banner外链,则跳转到微信商城以外的页面.
+// ------------------------------------------------------------------------------------
+//banner商品推荐
+$('.index-banner-img').on('click', function(e){
+    var column_guid = $(this).attr('column');
+    var guid = $(this).attr('guid');
+
+    if(!guid)
+        return;
+
+    var type = $("#"+column_guid).attr('optional');
+    show_goods_modal(guid,type);
+});
+
+//banner优惠广告
+$('.index-banner-ad').on('click', function(e){
+    var id = $(this).attr('id');
+
+    if(!id)
+        return;
+
+    show_ads_modal(id);
+});
+
+//banner外链
+$('.index-banner-link').on('click', function(){
+    var url = $(this).attr('link');
+
+    if(url){
+        window.location = url;
+    }
+});
+
+//栏目分类,点击直接到相应区域
+$('.item-tab-menu').on('click', function(e){
+    smoothScroll($(window), $($(e.currentTarget).attr('href')).offset().top-25, 300);
+});
+
+// 刚进去不给点击
+if($(".phoneNum").val() == ""){ //手机号为空
+    $(".get_code").attr("disabled", true); //获取验证码按钮不可点击
+}else{
+    $(".get_code").removeAttr("disabled"); //获取验证码按钮可点击
+}
+
+//给底部栏“我的冰淇淋”加选中class
+$('.menu-shop').addClass('weui-bar__item_on');
+$('.shop-menu-icon').attr('src', "__PUBLIC__/images/Mobile/icon/menu-home.png");
+</script>
+</block>

@@ -1,0 +1,48 @@
+<extend name="Public:base-shop" />
+<block name='title'>购买列表</block>
+<block name="head">
+    <link rel="stylesheet" href="__PUBLIC__/assets-unify/Shop-UI/assets/plugins/font-awesome/css/font-awesome.min.css">
+    <!-- CSS Page Style -->    
+    <link rel="stylesheet" href="__PUBLIC__/assets-unify/css/pages/page_404_error.css">
+
+</block>
+
+<block name="content">
+    <!--=== Content Part ===-->
+    <div class="container content">     
+        <!--Error Block-->
+        <div class="row" style="width: 100%;">
+            <div class="col-md-8 col-md-offset-2 shop-content" style="text-align: center;">
+                <div class="error-v1" style='padding-bottom:200px;margin-top: 100px;'>
+                    <img src="<{:U('ShopPc/qrcode')}>?data=<{$url}>" alt="" class="img-responsive center-block" style='width:300px;'>
+                    <p style="margin: 10px 0;">支付金额：<span style="font-weight: bold;">¥<{$orderInfo.payPrice}></span></p>
+                    <p style="margin: 10px 0 20px;">请用微信扫一扫功能扫描二维码完成支付。</p>
+                    <a class="btn-u btn-bordered" href="<{:U('index')}>" style="border: 1px solid #09bb07;padding: 8px 16px;color: #09bb07;">返回首页</a>
+                </div>
+            </div>
+        </div>
+        <!--End Error Block-->
+    </div>  
+    <!--=== End Content Part ===-->
+</block>
+
+<block name="body-bottom">
+
+<script>
+
+function checkPay(){
+    $.post('<{:U('payStateHandle')}>', {orderNo:'<{$orderInfo['orderNo']}>'}, function(data){
+        if(data['Code'] == 0){
+            window.location.href = '<{:U('finishOrder')}>';
+        }
+        else{
+            setTimeout('checkPay()', 1000);
+        }
+    })
+}
+
+setTimeout('checkPay()', 1000);
+
+</script>
+
+</block>

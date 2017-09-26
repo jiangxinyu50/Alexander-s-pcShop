@@ -1,0 +1,134 @@
+<extend name="Public/base-shop" />
+<block name='content'>
+    <div class="header topbar">
+        <!-- 顶部栏目 -->
+        <div class="weui-flex">
+            <div class="weui-flex__item">
+                <div class="placeholder"><span class="back-btn"><i class="iconfont icon-xiangzuo1"></i>返回</span></div>
+            </div>
+            <div class="weui-flex__item">
+                <div class="placeholder text-center">订单列表</div>
+            </div>
+            <div class="weui-flex__item">
+                <div class="placeholder"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGO -->
+    <div class="shop-content header-margin header-logo vip-logo">
+        <div style="height: 80px;background: #000 url(/Public/web/images/logo.png) no-repeat center;background-size: 25%;margin: 0 auto;"></div>
+    </div>
+
+    <!-- 右边悬浮菜单 -->
+    <div class="gotop fade-fast-transition">
+        <div class="panel panel-wechat text clearfix fade-fast-transition" style="display: none;">
+            <img class="image" src="__PUBLIC__/images/wechat_qrcode.jpg" alt="亚历山达冰淇淋微信二维码">
+            <div class="block">
+                <div class="name">亚历山达冰淇淋</div>
+                <p class="part">微信扫描二维码关注我们</p>
+            </div>
+        </div>
+        <ul class="list" style="list-style: none;">
+            <li class="nav-item">
+                <a class="link" href="#" style="padding: 5px;" title="返回顶部"><i class="icon-dingbu iconfont goTop cursor-pointer" style="font-size: 25px;"></i></a>
+            </li>
+            <li class="nav-item">
+                <a href="<{:U('Vip/index')}>" class="weui-tabbar__item menu-shop link">
+                        <span class="weui-tabbar_span">
+                            <img src="__PUBLIC__/images/Mobile/icon/menu-home-u.png" alt="Alexander's" class="weui-tabbar__icon shop-menu-icon">
+                        </span>
+                    <p class="weui-tabbar__label" style="margin-left: 1px;">返回</p>
+                    <p class="weui-tabbar__label" style="margin-left: 1px;">上页</p>
+                </a>
+            </li>
+            <li class="nav-item follow-us"> <a class="link" href="javascript:void(0);" style="border-bottom: 0;">
+                <p style="font-size: 12px;">关注</p>
+                <p style="font-size: 12px;">我们</p>
+            </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 左边悬浮分类栏 -->
+    <ul class="menu-ul">
+        <li>
+            <a class="goods-styles item-tab-menu" href="<{:U('ShopPc/index')}>"><span class="slide-text cursor-pointer">商城主页</span></a>
+        </li>
+        <li>
+            <a class="goods-styles item-tab-menu" href="<{:U('index')}>"><span class="slide-text cursor-pointer">个人中心</span></a>
+        </li>
+        <li>
+            <a class="goods-styles item-tab-menu" href="<{:U('info')}>"><span class="slide-text cursor-pointer">个人资料</span></a>
+        </li>
+        <li>
+            <a class="goods-styles item-tab-menu" href="<{:U('card')}>"><span class="slide-text cursor-pointer">优惠券</span></a>
+        </li>
+    </ul>
+
+	<div class="content vip-order-list shop-content">
+        <!-- 订单分栏 -->
+        <i class="iconfont icon-dingbu back_up" aria-hidden="true"></i>
+        <div class="weui-tab">
+            <div class="weui-navbar">
+                <div class="weui-navbar__item weui-bar__item_on order-tab-menu cursor-pointer">
+                    全部
+                </div>
+                <div class="weui-navbar__item order-tab-menu cursor-pointer" sign='0'>
+                    待付款
+                </div>
+                <div class="weui-navbar__item order-tab-menu cursor-pointer" sign='1'>
+                    待配送
+                </div>
+                <div class="weui-navbar__item order-tab-menu cursor-pointer" sign='205'>
+                    已完成
+                </div>
+            </div>
+            <div class="weui-tab__panel order-tab-content">
+            </div>
+        </div>
+    </div>
+    <include file="Public/footer-shop" />
+</block>
+<block name='footer-js'>
+<script>
+    $('.page').addClass('gray-bg');
+
+    //返回
+    $('.back-btn').on('click', function(){
+        window.location.href = "<{:U('Vip/index')}>";
+    });
+
+    //底部栏图标选中变色
+    $('.menu-vip').addClass('weui-bar__item_on');
+    $('.vip-menu-icon').attr('src', "__PUBLIC__/images/Mobile/icon/menu-vip.png");
+    shop_item_init(false);
+
+    //加载订单信息
+    $('.order-tab-content').load("<{:U('order_tab_list')}>", function(){});
+
+    //订单信息，选项卡切换特效等
+    $('.order-tab-menu').on('click', function(){
+        $('.order-tab-menu').removeClass('weui-bar__item_on');
+        $(this).addClass('weui-bar__item_on');
+
+        var opt = {};
+
+        if($(this).attr('sign')){
+            opt['sign'] = $(this).attr('sign');
+        }
+
+        $('.order-tab-content').load("<{:U('order_tab_list')}>", opt, function(){});
+    });
+
+    //监听事件，滚动条超过一定程度，显示“返回顶部”
+    window.addEventListener('scroll',function(){
+        var _scrollTop = document.body.scrollTop;
+        if(_scrollTop > 200){
+            $('.back_up').show();
+        }else{
+            $('.back_up').hide();
+        }
+    },false);
+</script>
+</block>
